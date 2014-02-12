@@ -14,10 +14,11 @@
 #include <muduo/base/Condition.h>
 #include <muduo/base/Mutex.h>
 
+#include <functional>
+#include <memory>
 #include <vector>
-#include <boost/function.hpp>
+
 #include <boost/noncopyable.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
 
 namespace muduo
 {
@@ -31,7 +32,7 @@ class EventLoopThread;
 class EventLoopThreadPool : boost::noncopyable
 {
  public:
-  typedef boost::function<void(EventLoop*)> ThreadInitCallback;
+  typedef std::function<void(EventLoop*)> ThreadInitCallback;
 
   EventLoopThreadPool(EventLoop* baseLoop);
   ~EventLoopThreadPool();
@@ -45,7 +46,7 @@ class EventLoopThreadPool : boost::noncopyable
   bool started_;
   int numThreads_;
   int next_;
-  boost::ptr_vector<EventLoopThread> threads_;
+  std::vector<std::unique_ptr<EventLoopThread>> threads_;
   std::vector<EventLoop*> loops_;
 };
 

@@ -16,10 +16,11 @@
 
 #include <muduo/base/StringPiece.h>
 #include <muduo/base/Timestamp.h>
+#include <muduo/net/Callbacks.h>
 
-#include <boost/function.hpp>
+#include <memory>
+
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 namespace google
 {
@@ -34,19 +35,16 @@ namespace muduo
 namespace net
 {
 
-class Buffer;
-class TcpConnection;
-typedef boost::shared_ptr<TcpConnection> TcpConnectionPtr;
-typedef boost::shared_ptr<google::protobuf::Message> MessagePtr;
+typedef std::shared_ptr<google::protobuf::Message> MessagePtr;
 
 template<typename MSG>
 class ProtobufCodecT
 {
  public:
-  typedef boost::shared_ptr<MSG> MessagePtr;
-  typedef boost::function<void (const TcpConnectionPtr&,
-                                const MessagePtr&,
-                                Timestamp)> ProtobufMessageCallback;
+  typedef std::shared_ptr<MSG> MessagePtr;
+  typedef std::function<void (const TcpConnectionPtr&,
+                              const MessagePtr&,
+                              Timestamp)> ProtobufMessageCallback;
 };
 
 // wire format
@@ -72,14 +70,14 @@ class ProtobufCodec : boost::noncopyable
     kParseError,
   };
 
-  typedef boost::function<void (const TcpConnectionPtr&,
-                                const MessagePtr&,
-                                Timestamp)> ProtobufMessageCallback;
+  typedef std::function<void (const TcpConnectionPtr&,
+                              const MessagePtr&,
+                              Timestamp)> ProtobufMessageCallback;
 
-  typedef boost::function<void (const TcpConnectionPtr&,
-                                Buffer*,
-                                Timestamp,
-                                ErrorCode)> ErrorCallback;
+  typedef std::function<void (const TcpConnectionPtr&,
+                              Buffer*,
+                              Timestamp,
+                              ErrorCode)> ErrorCallback;
 
   ProtobufCodec(const ::google::protobuf::Message* prototype,
                 StringPiece tag,
