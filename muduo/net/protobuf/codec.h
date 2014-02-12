@@ -20,8 +20,6 @@
 
 #include <memory>
 
-#include <boost/noncopyable.hpp>
-
 namespace google
 {
 namespace protobuf
@@ -57,7 +55,7 @@ class ProtobufCodecT
 // checksum  4-byte  adler32 of tag+payload
 //
 // This is an internal class, you should use ProtobufCodecT instead.
-class ProtobufCodec : boost::noncopyable
+class ProtobufCodec : noncopyable
 {
  public:
   enum ErrorCode

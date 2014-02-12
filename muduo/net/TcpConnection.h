@@ -21,8 +21,6 @@
 #include <memory>
 
 #include <boost/any.hpp>
-#include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
 
 namespace muduo
 {
@@ -37,7 +35,7 @@ class Socket;
 /// TCP connection, for both client and server usage.
 ///
 /// This is an interface class, so don't expose too much details.
-class TcpConnection : boost::noncopyable,
+class TcpConnection : noncopyable,
                       public std::enable_shared_from_this<TcpConnection>
 {
  public:
@@ -123,8 +121,8 @@ class TcpConnection : boost::noncopyable,
   string name_;
   StateE state_;  // FIXME: use atomic variable
   // we don't expose those classes to client.
-  boost::scoped_ptr<Socket> socket_;
-  boost::scoped_ptr<Channel> channel_;
+  std::unique_ptr<Socket> socket_;
+  std::unique_ptr<Channel> channel_;
   InetAddress localAddr_;
   InetAddress peerAddr_;
   ConnectionCallback connectionCallback_;
