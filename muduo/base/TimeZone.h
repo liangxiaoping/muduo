@@ -7,7 +7,7 @@
 #define MUDUO_BASE_TIMEZONE_H
 
 #include <muduo/base/copyable.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <time.h>
 
 namespace muduo
@@ -42,7 +42,7 @@ class TimeZone : public muduo::copyable
 
  private:
 
-  boost::shared_ptr<Data> data_;
+  std::shared_ptr<Data> data_;
 };
 
 }
